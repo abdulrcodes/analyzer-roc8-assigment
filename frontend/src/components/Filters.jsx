@@ -32,7 +32,7 @@ const Filter = () => {
     const fetchDates = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/chart/data"
+          `${import.meta.env.VITE_BACKEND_URL}/api/chart/data`
         );
         const uniqueDates = Array.from(
           new Set(response.data.map((entry) => entry.Day))

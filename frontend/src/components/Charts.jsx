@@ -23,7 +23,7 @@ const GraphComponent = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/chart/data?${query}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/chart/data?${query}`
         );
         const result = await response.json();
         setData(result);
