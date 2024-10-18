@@ -38,12 +38,16 @@ coverage/
 *.lcov-report/
 
 # Environment variable files
-# Ignoring .env files to prevent sensitive data exposure
+# Ignoring .env files to prevent sensitive data exposure in any folder
 .env
 .env.*.local
+frontend/.env
+backend/.env
 
 # Do not ignore the .env.example file for reference
 !.env.example
+!frontend/.env.example
+!backend/.env.example
 
 # IDE and editor directories
 .idea/
