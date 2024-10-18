@@ -4,21 +4,82 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependency directories
+node_modules/
+jspm_packages/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Dependency files
+package-lock.json
+yarn.lock
+
+# Build directories and files
+dist/
+build/
+out/
+*.build/
+
+# Cache directories and files
+.cache/
+.next/
+.nuxt/
+.pnpm/
+*.tsbuildinfo
+
+# Static files
+*.cache/
+*.html
+*.css.map
+*.css
+
+# Coverage reports
+coverage/
+*.lcov
+*.lcov-report/
+
+# Environment variable files
+# Ignoring .env files to prevent sensitive data exposure
+.env
+.env.*.local
+
+# Do not ignore the .env.example file for reference
+!.env.example
+
+# IDE and editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# OS generated files
+.DS_Store
+*.DS_Store
+Icon?
+Thumbs.db
+
+# GitHub Actions
+# Ignore all but the following files
+!/.github
+!/.github/dependabot.yml
+!/.github/workflows
+
+# Miscellaneous
+*.lock
+*.log
+*.tmp
+*.bak
+*.old
+
+# macOS
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
