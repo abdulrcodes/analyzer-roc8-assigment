@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { useFilters } from "../context/FilterContext";
+import { FaSpinner } from "react-icons/fa"; // Import spinner icon
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -11,6 +12,7 @@ const GraphComponent = () => {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [lineChartData, setLineChartData] = useState({});
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,13 +24,16 @@ const GraphComponent = () => {
       }).toString();
 
       try {
+        setIsLoading(true); // Start loading
         const response = await fetch(
           `https://analyzer-roc8-assigment.onrender.com/api/chart/data?${query}`
         );
         const result = await response.json();
         setData(result);
+        setIsLoading(false); // End loading
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // End loading on error
       }
     };
 
@@ -96,101 +101,54 @@ const GraphComponent = () => {
             Bar Chart: <span className="text-blue-600">Total Time Spent</span>
           </h2>
 
-          <div className="h-64 md:h-80 lg:h-96 hidden md:flex">
-            {" "}
-            {/* Control chart height */}
-            <Bar
-              className="cursor-pointer"
-              data={getBarChartData()}
-              options={{
-                indexAxis: "y", // Makes the bar chart horizontal
-                onClick: (event, elems) => handleBarClick(elems),
-                plugins: {
-                  zoom: {
-                    pan: {
-                      enabled: true,
-                      mode: "x",
-                    },
+          {/* Loading Spinner */}
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <FaSpinner className="animate-spin text-5xl text-blue-500" />
+            </div>
+          ) : (
+            <div className="h-64 md:h-80 lg:h-96">
+              <Bar
+                className="cursor-pointer"
+                data={getBarChartData()}
+                options={{
+                  indexAxis: "y", // Makes the bar chart horizontal
+                  onClick: (event, elems) => handleBarClick(elems),
+                  plugins: {
                     zoom: {
-                      enabled: true,
-                      mode: "x",
+                      pan: {
+                        enabled: true,
+                        mode: "x",
+                      },
+                      zoom: {
+                        enabled: true,
+                        mode: "x",
+                      },
                     },
                   },
-                },
-                scales: {
-                  x: {
-                    beginAtZero: true, // Ensure the bars start from 0
-                    grid: {
-                      display: true, // Show vertical grid lines
+                  scales: {
+                    x: {
+                      beginAtZero: true, // Ensure the bars start from 0
+                      grid: {
+                        display: true, // Show vertical grid lines
+                      },
+                      border: {
+                        display: false, // Remove outer border for x-axis
+                      },
                     },
-                    border: {
-                      display: false, // Remove outer border for x-axis
-                    },
-                  },
-                  y: {
-                    grid: {
-                      display: false, // Remove horizontal grid lines
-                    },
-                    border: {
-                      display: false, // Remove outer border for y-axis
-                    },
-                  },
-                },
-              }}
-            />
-          </div>
-
-          {/* Mobile Chart view  */}
-          <div className="h-64 md:h-80 lg:h-96 md:hidden">
-            <Bar
-              className="cursor-pointer"
-              data={getBarChartData()}
-              options={{
-                indexAxis: "y", // Keeps the bar chart horizontal
-                maintainAspectRatio: false, // Stretch chart to fit container
-                onClick: (event, elems) => handleBarClick(elems),
-                plugins: {
-                  zoom: {
-                    pan: {
-                      enabled: true,
-                      mode: "x",
-                    },
-                    zoom: {
-                      enabled: true,
-                      mode: "x",
+                    y: {
+                      grid: {
+                        display: false, // Remove horizontal grid lines
+                      },
+                      border: {
+                        display: false, // Remove outer border for y-axis
+                      },
                     },
                   },
-                },
-                scales: {
-                  x: {
-                    beginAtZero: true, // Ensure bars start from 0
-                    grid: {
-                      display: true, // Show vertical grid lines
-                    },
-                    border: {
-                      display: false, // Remove outer border for x-axis
-                    },
-                    ticks: {
-                      callback: (value) => (value % 1 === 0 ? value : ""), // Show only integer values
-                      maxTicksLimit: 5, // Limit number of x-axis ticks on small screens
-                    },
-                  },
-                  y: {
-                    grid: {
-                      display: false, // Remove horizontal grid lines
-                    },
-                    border: {
-                      display: false, // Remove outer border for y-axis
-                    },
-                    ticks: {
-                      autoSkip: false, // Don't skip any labels
-                      maxTicksLimit: 10, // Limit number of y-axis ticks for small screens
-                    },
-                  },
-                },
-              }}
-            />
-          </div>
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Line Chart Section */}
@@ -203,8 +161,7 @@ const GraphComponent = () => {
               </span>
             </h2>
 
-            <div className="h-64 md:h-80 lg:h-96 hidden md:flex">
-              {/* Control chart height */}
+            <div className="h-64 md:h-80 lg:h-96">
               <Line
                 data={lineChartData}
                 options={{
@@ -239,53 +196,6 @@ const GraphComponent = () => {
                       },
                       border: {
                         display: false, // Remove outer border for y-axis
-                      },
-                    },
-                  },
-                }}
-              />
-            </div>
-
-            {/* For Mobile view  */}
-            <div className="h-64 md:h-80 lg:h-96 md:hidden">
-              <Line
-                data={lineChartData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false, // Stretch chart to fit container
-                  plugins: {
-                    zoom: {
-                      pan: {
-                        enabled: true,
-                        mode: "x",
-                      },
-                      zoom: {
-                        enabled: true,
-                        mode: "x",
-                      },
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: {
-                        display: false, // Remove vertical grid lines
-                      },
-                      border: {
-                        display: false, // Remove outer border for x-axis
-                      },
-                      ticks: {
-                        maxTicksLimit: 5, // Limit number of x-axis ticks for small screens
-                      },
-                    },
-                    y: {
-                      grid: {
-                        display: true, // Keep horizontal grid lines
-                      },
-                      border: {
-                        display: false, // Remove outer border for y-axis
-                      },
-                      ticks: {
-                        maxTicksLimit: 5, // Limit number of y-axis ticks for small screens
                       },
                     },
                   },
