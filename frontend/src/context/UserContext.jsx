@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
     if (storedUser && token) {
       setUser(JSON.parse(storedUser)); // Parse the stored user data and set the user state
     }
-  }, []);
+  }, []); // No dependencies needed as this runs only on the initial render
 
   // Function to register a new user
   const registerUser = async (userData) => {
@@ -45,11 +45,12 @@ export const UserProvider = ({ children }) => {
       return response.data; // Return the response for further use if needed
     } catch (err) {
       setError(
-        err.response?.data?.message || "An error occurred during registration"
+        err.response?.data?.message ||
+          "An unexpected error occurred during registration."
       );
       console.error(err);
     } finally {
-      setLoading(false); // Stop loading state after request is complete
+      setLoading(false); // Ensure loading stops after request is complete
     }
   };
 
@@ -74,10 +75,13 @@ export const UserProvider = ({ children }) => {
 
       return response.data; // Return the response for further use if needed
     } catch (err) {
-      setError(err.response?.data?.message || "An error occurred during login");
+      setError(
+        err.response?.data?.message ||
+          "An unexpected error occurred during login."
+      );
       console.error(err);
     } finally {
-      setLoading(false); // Stop loading state after request is complete
+      setLoading(false); // Ensure loading stops after request is complete
     }
   };
 
@@ -91,7 +95,8 @@ export const UserProvider = ({ children }) => {
 
   // Function to check if the user is authenticated
   const isAuthenticated = () => {
-    return !!user && !!localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    return !!user && !!token;
   };
 
   // Function to get the authentication token

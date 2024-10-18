@@ -158,7 +158,7 @@ const Filter = () => {
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Age Range Selector */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center">
+          <label className=" text-sm font-semibold text-gray-800 mb-2 flex items-center">
             <FaUser className="mr-2 text-gray-500" /> Age Range:
           </label>
           <select
@@ -209,7 +209,7 @@ const Filter = () => {
 
         {/* End Date Selector */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center">
+          <label className=" text-sm font-semibold text-gray-800 mb-2 flex items-center">
             <FaCalendarAlt className="mr-2 text-gray-500" /> End Date:
           </label>
           <select
