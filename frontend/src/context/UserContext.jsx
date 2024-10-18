@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `https://analyzer-roc8-assigment.onrender.com/api/users/register`, // Your registration API endpoint
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
         userData
       );
 
@@ -60,7 +60,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `https://analyzer-roc8-assigment.onrender.com/api/users/login`, // Your login API endpoint
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
         credentials
       );
 

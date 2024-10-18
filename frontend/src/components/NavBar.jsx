@@ -18,16 +18,13 @@ const NavBar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="text-white text-4xl font-extrabold tracking-wide hover:opacity-90 transition-opacity duration-300"
+          className="text-white text-2xl md:text-4xl font-extrabold tracking-wide hover:opacity-90 transition-opacity duration-300"
         >
           Analyzer
         </Link>
 
-        {/* Hamburger Icon */}
-        <div
-          className="md:hidden  flex  ml-32  items-center"
-          onClick={toggleMenu}
-        >
+        {/* Hamburger Icon (visible on small screens) */}
+        <div className="md:hidden flex items-center" onClick={toggleMenu}>
           {isOpen ? (
             <FaTimes className="text-white text-3xl" />
           ) : (
@@ -35,24 +32,20 @@ const NavBar = () => {
           )}
         </div>
 
-        {/* Navigation Links */}
-        <div
-          className={`flex items-center space-x-6 md:space-x-10 ${
-            isOpen ? "flex" : "hidden"
-          } md:flex`}
-        >
+        {/* Desktop Navigation Links */}
+        <div className={`hidden md:flex items-center space-x-6 md:space-x-10`}>
           {user ? (
             <>
               {/* User Info */}
-              <div className=" items-center hidden md:flex text-white">
+              <div className="flex items-center text-white">
                 <FaUserCircle className="mr-2 text-3xl" />
-                <span className="font-medium text-lg">Hi {user.name}</span>
+                <span className="font-medium text-lg">Hi, {user.name}</span>
               </div>
 
               {/* Logout Button */}
               <button
                 onClick={logoutUser}
-                className="bg-white hidden md:block text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300"
+                className="bg-white text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300"
               >
                 Logout
               </button>
@@ -79,22 +72,22 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu for Small Screens */}
+      {/* Mobile Menu (visible on small screens) */}
       <div
-        className={`md:hidden flex flex-col ml-40   items-center mt-4 ${
+        className={`${
           isOpen ? "block" : "hidden"
-        }`}
+        } md:hidden flex flex-col items-center mt-4 space-y-4`}
       >
         {user ? (
           <>
-            <div className="flex items-center text-white mb-4">
+            <div className="flex items-center text-white">
               <FaUserCircle className="mr-2 text-3xl" />
-              <span className="font-medium text-lg">Hi {user.name}</span>
+              <span className="font-medium text-lg">Hi, {user.name}</span>
             </div>
 
             <button
               onClick={logoutUser}
-              className="bg-white text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300 mb-2"
+              className="bg-white text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300"
             >
               Logout
             </button>
@@ -103,14 +96,14 @@ const NavBar = () => {
           <>
             <Link
               to="/register"
-              className="bg-white text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300 mb-2"
+              className="bg-white text-blue-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 duration-300"
             >
               Register
             </Link>
 
             <Link
               to="/login"
-              className="text-white font-semibold hover:underline transition-opacity duration-300 mb-2"
+              className="text-white font-semibold hover:underline transition-opacity duration-300"
             >
               Login
             </Link>

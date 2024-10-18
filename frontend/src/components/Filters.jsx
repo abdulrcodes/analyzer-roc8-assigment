@@ -32,7 +32,7 @@ const Filter = () => {
     const fetchDates = async () => {
       try {
         const response = await axios.get(
-          `https://analyzer-roc8-assigment.onrender.com/api/chart/data`
+          `${import.meta.env.VITE_BACKEND_URL}/api/chart/data`
         );
         const uniqueDates = Array.from(
           new Set(response.data.map((entry) => entry.Day))
@@ -44,8 +44,10 @@ const Filter = () => {
     };
 
     fetchDates();
+  }, []); // Run only once on mount
 
-    // Load filter preferences from cookies
+  // Load filter preferences from cookies
+  useEffect(() => {
     const savedAgeRange = Cookies.get("ageRange");
     const savedGender = Cookies.get("gender");
     const savedStartDate = Cookies.get("startDate");
@@ -66,7 +68,7 @@ const Filter = () => {
         setEndDate(""); // Reset if not valid
       }
     }
-  }, [dates]);
+  }, [dates, setAgeRange, setGender, setStartDate, setEndDate]); // Depend on 'dates'
 
   // Save preferences to cookies on filter change
   useEffect(() => {
@@ -74,7 +76,7 @@ const Filter = () => {
     if (gender) Cookies.set("gender", gender, { expires: 7 });
     if (startDate) Cookies.set("startDate", startDate, { expires: 7 });
     if (endDate) Cookies.set("endDate", endDate, { expires: 7 });
-  }, [ageRange, gender, startDate, endDate]);
+  }, [ageRange, gender, startDate, endDate]); // Only depend on filter states
 
   // Handle Start Date Change and filter end dates
   const handleStartDateChange = (e) => {
@@ -147,7 +149,7 @@ const Filter = () => {
 
       return () => clearTimeout(timer); // Cleanup timer on unmount
     }
-  }, [copySuccess, setCopySuccess]);
+  }, [copySuccess]);
 
   const isAnyFilterSelected = ageRange || gender || startDate || endDate;
 
@@ -214,7 +216,6 @@ const Filter = () => {
             value={endDate}
             onChange={handleEndDateChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-            disabled={!startDate} // Disable until start date is selected
           >
             <option value="">Select End Date</option>
             {filteredEndDates.map((date) => (
@@ -226,31 +227,32 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-5 justify-end">
-        {/* Buttons for Reset and Share */}
+      {/* Action Buttons */}
+      <div className="mt-6 flex justify-end gap-5">
         <button
           onClick={handleReset}
-          className={`px-4 py-2 flex items-center gap-2 bg-red-600 text-white rounded-md shadow-md transition duration-300 ease-in-out ${
+          disabled={!isAnyFilterSelected} // Disable if no filters are selected
+          className={`flex items-center px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 transition duration-300 ease-in-out ${
             !isAnyFilterSelected ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!isAnyFilterSelected} // Disable if no filter is selected
         >
-          <FaRedo className="mr-1" /> Reset
+          <FaRedo className="mr-2" /> Reset
         </button>
+
         <button
           onClick={handleShare}
-          className={`px-4 py-2 flex items-center gap-2 bg-blue-600 text-white rounded-md shadow-md transition duration-300 ease-in-out ${
+          disabled={!isAnyFilterSelected} // Disable if no filters are selected
+          className={`flex items-center px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition duration-300 ease-in-out ${
             !isAnyFilterSelected ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!isAnyFilterSelected} // Disable if no filter is selected
         >
-          <FaShareAlt className="mr-1" /> Share
+          <FaShareAlt className="mr-2" /> Share
         </button>
       </div>
 
       {/* Copy Success Message */}
       {showCopySuccess && (
-        <p className="mt-4 text-green-500 text-sm">{copySuccess}</p>
+        <div className="mt-4 text-green-600">{copySuccess}</div>
       )}
     </div>
   );
