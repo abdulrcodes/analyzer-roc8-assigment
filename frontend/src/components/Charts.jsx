@@ -23,7 +23,7 @@ const GraphComponent = () => {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/chart/data?${query}`
+          `https://analyzer-roc8-assigment.onrender.com/api/chart/data?${query}`
         );
         const result = await response.json();
         setData(result);
