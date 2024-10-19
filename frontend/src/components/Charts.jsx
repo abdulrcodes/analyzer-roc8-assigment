@@ -181,21 +181,21 @@ const GraphComponent = () => {
                   scales: {
                     x: {
                       grid: {
-                        display: false, // Remove vertical grid lines
+                        display: false,
                       },
                       border: {
-                        display: false, // Remove outer border for x-axis
+                        display: false,
                       },
                       ticks: {
-                        maxTicksLimit: 10, // Limit number of x-axis ticks for small screens
+                        maxTicksLimit: 10,
                       },
                     },
                     y: {
                       grid: {
-                        display: true, // Keep horizontal grid lines (optional)
+                        display: true,
                       },
                       border: {
-                        display: false, // Remove outer border for y-axis
+                        display: false,
                       },
                     },
                   },
